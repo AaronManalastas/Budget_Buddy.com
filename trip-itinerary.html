@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trip Itinerary</title>
+  <style>
+
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+
+
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      max-width: 1100px;
+  margin: 10px auto;
+  padding: 100px 20px 20px; /* Add top padding to offset the fixed navbar */
+    }
+    .form-box {
+      background-color: #111;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+    }
+    .trip-card {
+  background-color: black;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  border: 1px solid #333;
+
+  display: flex;               /* flex container */
+  align-items: center;         /* vertical center */
+  gap: 20px;
+}
+
+.trip-card img {
+  width: 150px;
+  height: auto;           /* maintain aspect ratio */
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+  background-color: black;
+}
+
+.trip-info {
+  flex: 1;                    /* take remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 60px;
+}
+
+.trip-info .title {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.trip-info .location-cost {
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.action-buttons {
+  margin-top: 8px;
+  display: flex;
+  gap: 10px;
+}
+
+.action-buttons button {
+  margin: 0;
+  padding: 6px 12px;
+  background: #e65100;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.action-buttons button:hover {
+  background-color: #bf4500;
+}
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: none;
+    }
+    .flex-group {
+      display: flex;
+      gap: 15px;
+    }
+    .input-half {
+      flex: 1;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+    }
+    .save-btn, .cancel-btn {
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .save-btn {
+      background-color: #e65100;
+      color: white;
+      border: none;
+    }
+    .cancel-btn {
+      background-color: transparent;
+      color: white;
+      border: 1px solid #999;
+    }
+    .navbar {
+       background-color: #e75e1c;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed; /* Make it stick */
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+       margin-left: 150px;
+    }
+
+    .nav-left a, .nav-left span.logo {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-left a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-left span.logo {
+      font-size: 1.2em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .profile-circle {
+      background-color: white;
+      color: #e75e1c;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .search-add {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-add input, .search-add button {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .search-add input {
+      width: 200px;
+    }
+
+    .search-add button {
+      background-color: white;
+      color: #e75e1c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #formPage, #detailsPage {
+      background-color: #111;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100%;
+      z-index: 10;
+      display: none;
+      padding: 20px;
+    }
+
+    .back-button {
+      background-color: #e75e1c;
+      border: none;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+    .category-section {
+      margin-top: 30px;
+    }
+    .category-section h2 {
+      font-size: 20px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .badge {
+      background-color: #444;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      vertical-align: middle;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+    .modal-content {
+      background-color: #111;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      position: relative;
+    }
+    .modal-header {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: white;
+    }
+    .close {
+      color: white;
+      font-size: 28px;
+      font-weight: bold;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+    }
+    .close:hover,
+    .close:focus {
+      color: #e65100;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <!-- NAVBAR + HEADER COMBINED -->
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">✈️ Budget Buddy</span>
+    <a href="index.html">🚀Welcome to TraveLogix!</a>
+    <a href="trip-itinerary.html">🧳Trip Itinerary</a>
+    <a href="transportation-guide.html">🌐Transportation Guide</a>
+    <a href="expence-tracker.html">💰Expense Tracker</a>
+    <a href="dashboard.html">👤Dashboard</a>
+  </div>
+  <div class="nav-right">   
+    <div class="profile-circle">B</div>
+  </div>
+</nav>
+
+  <section class="container">
+    <div class="section-header">
+      <h1>Trip Itinerary by Category</h1>
+    </div>
+
+    <div class="form-box">
+      <h2>Edit Item</h2>
+      <form id="itinerary-form">
+        <input type="hidden" id="editIndex">
+
+        <label for="category">Category</label>
+        <select id="category" required onchange="updateDestinations()">
+          <option value="">Select Category</option>
+          <option value="RESTAURANT">RESTAURANT</option>
+          <option value="ACCOMMODATION">ACCOMMODATION</option>
+          <option value="TOURIST ATTRACTIONS">TOURIST ATTRACTIONS</option>
+          <option value="CAFES">CAFES</option>
+          <option value="SHOPPING MALLS">SHOPPING MALLS</option>
+          <option value="RESORT">RESORT</option>
+        </select>
+
+        <label for="destination">Destination</label>
+        <select id="destination" required></select>
+
+        <div class="flex-group">
+          <div class="input-half">
+            <label for="date">Date (Optional)</label>
+            <input type="date" id="date">
+          </div>
+          <br>
+          <div class="input-half">
+            <label for="time">Time (Optional)</label>
+            <input type="time" id="time">
+          </div>
+        </div>
+
+        <label for="notes">Notes</label>
+        <textarea id="notes" rows="4" placeholder="Extra info..."></textarea>
+
+        <div class="button-group">
+          <button type="submit" class="save-btn" href="#">Save Item</button>
+          <button type="button" class="cancel-btn" onclick="clearForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="itinerary-list" class="saved-items"></div>
+  </section>
+
+  <!-- View Modal -->
+  <div id="view-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeViewModal()">&times;</span>
+      <h2 class="modal-header">Itinerary Details</h2>
+      <div id="modal-details"></div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="edit-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <h2 class="modal-header">Edit Item</h2>
+      <form id="edit-form">
+        <input type="hidden" id="modalEditIndex">
+
+        <label for="modal-category">Category</label>
+        <select id="modal-category" required onchange="updateModalDestinations()">
+          <option value="">Select Category</option>
+          <option value="RESTAURANT">RESTAURANT</option>
+          <option value="ACCOMMODATION">ACCOMMODATION</option>
+          <option value="TOURIST ATTRACTIONS">TOURIST ATTRACTIONS</option>
+          <option value="CAFES">CAFES</option>
+          <option value="SHOPPING MALLS">SHOPPING MALLS</option>
+          <option value="RESORT">RESORT</option>
+        </select>
+
+        <label for="modal-destination">Destination</label>
+        <select id="modal-destination" required></select>
+
+        <div class="flex-group">
+          <div class="input-half">
+            <label for="modal-date">Date (Optional)</label>
+            <input type="date" id="modal-date">
+          </div>
+          <br>
+          <div class="input-half">
+            <label for="modal-time">Time (Optional)</label>
+            <input type="time" id="modal-time">
+          </div>
+        </div>
+
+        <label for="modal-notes">Notes</label>
+        <textarea id="modal-notes" rows="4" placeholder="Extra info..."></textarea>
+
+        <div class="button-group">
+          <button type="submit" class="save-btn">Save Item</button>
+          <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+
+  let items = [];
+
+  const destinationOptions = {
+    "RESTAURANT": ["The Aristocrat restaurant", "Lomi king", "Lipa Grill", "Hapag filipino restaurant", "Fat Grill"],
+    "ACCOMMODATION": ["Jet Hotel", "Solano", "Meaco Royal Hotel", "The suites at mt.Malarayat", "Anfa Royal"],
+    "TOURIST ATTRACTIONS": ["Metropolitan Cathedral of San Sebastian (The Roman Catholic Archdiocese of Lipa)", "CASA DE SEGUNDA", "Our Lady Of Mount Carmel Parish", "LIPA CITY COMMUNITY PARK", "THE OLD GROVE FARMSTEAD"],
+    "CAFES": ["Starbucks Lipa", "Coffee Project", "Bo's Coffee Lipa", "The Coffee Bean & Tea Leaf", "Cafe de Lipa"],
+    "SHOPPING MALLS": ["SM City Lipa", "Robinsons Lipa", "The Outlets Lipa", "Lipa City Supermarket", "Walter Mart Lipa"],
+    "RESORT": ["Villa Belinda Pavilion Resort", "MZ Magsino Resort", "La Vida Resort Lipa City Batangas", "Villa Jovita Resort", "Hotel 1925"]
+  };
+
+  const destinationDescriptions = {
+    "RESTAURANT": {
+      "The Aristocrat restaurant": "A well-known Filipino restaurant serving classic dishes since the 1930s.",
+      "Lomi king": "Famous for its rich and flavorful Batangas-style lomi.",
+      "Lipa Grill": "Offers grilled Filipino favorites in a casual dining setting.",
+      "Hapag filipino restaurant": "A cozy place to enjoy authentic Filipino home-cooked meals.",
+      "Fat Grill": "Modern eatery serving fusion dishes and grilled specialties."
+    },
+    "ACCOMMODATION": {
+      "Jet Hotel": "Comfortable city hotel with modern amenities and easy access to key spots.",
+      "Solano": "Elegant hotel known for luxury and top-notch service.",
+      "Meaco Royal Hotel": "Budget-friendly hotel located in central Lipa.",
+      "The suites at mt.Malarayat": "Upscale accommodations within a golf and country club setting.",
+      "Anfa Royal": "Boutique hotel offering stylish rooms and a relaxing atmosphere."
+    },
+    "TOURIST ATTRACTIONS": {
+      "Metropolitan Cathedral of San Sebastian (The Roman Catholic Archdiocese of Lipa)": "A historic cathedral and religious center in Lipa.",
+      "CASA DE SEGUNDA": "Heritage house museum showcasing Filipino-Spanish architecture.",
+      "Our Lady Of Mount Carmel Parish": "Pilgrimage site known for its peaceful ambiance and history.",
+      "LIPA CITY COMMUNITY PARK": "Open green space for leisure, walking, and family outings.",
+      "THE OLD GROVE FARMSTEAD": "Instagram-worthy farm-themed attraction with Dutch-inspired scenery."
+    },
+    "CAFES": {
+      "Starbucks Lipa": "Popular coffeehouse chain offering handcrafted beverages.",
+      "Coffee Project": "Aesthetic cafe with creative interiors and cozy vibes.",
+      "Bo's Coffee Lipa": "Proudly Filipino coffee chain with local bean offerings.",
+      "The Coffee Bean & Tea Leaf": "Premium cafe with a variety of teas and espresso drinks.",
+      "Cafe de Lipa": "Local cafe known for its authentic Barako coffee experience."
+    },
+    "SHOPPING MALLS": {
+      "SM City Lipa": "Large mall offering shopping, dining, and entertainment options.",
+      "Robinsons Lipa": "Full-featured mall with department stores, restaurants, and cinemas.",
+      "The Outlets Lipa": "Upscale shopping and dining complex with a modern vibe.",
+      "Lipa City Supermarket": "Affordable and convenient grocery and local goods hub.",
+      "Walter Mart Lipa": "Community mall with retail stores, eateries, and groceries."
+    },
+    "RESORT": {
+  "Villa Belinda Pavilion Resort": "Villa Belinda Pavilion Resort offers a tranquil escape with two swimming pools surrounded by lush greenery.",
+  "MZ Magsino Resort": "Description: MZ Magsino Resort is a local resort offering public swimming pools and holiday accommodations.",
+  "La Vida Resort Lipa City Batangas": "La Vida Resort and Events Center is a versatile venue that caters to various events, including weddings, birthdays, and corporate functions.",
+  "Villa Jovita Resort": "Tropical getaway with Instagram-worthy views and natural pools.",
+  "Hotel 1925": "Boutique hotel with a mix of classic and contemporary amenities."
+}
+  };
+
+
+const destinationDetails = {
+  "RESTAURANT": {
+    "The Aristocrat restaurant": { cost: "₱500", location: "Jose P. Laurel Highway, Lipa" },
+    "Lomi king": { cost: "₱150", location: "Brgy. Sabang, Lipa" },
+    "Lipa Grill": { cost: "₱350", location: "Ayala Highway, Lipa" },
+    "Hapag filipino restaurant": { cost: "₱300", location: "Brgy. Balintawak, Lipa" },
+    "Fat Grill": { cost: "₱400", location: "Ayala Highway, Lipa" }
+  },
+  "ACCOMMODATION": {
+    "Jet Hotel": { cost: "₱2000", location: "Downtown Lipa" },
+    "Solano": { cost: "₱3500", location: "Brgy. Inosluban, Lipa" },
+    "Meaco Royal Hotel": { cost: "₱1500", location: "P. Torres St., Lipa" },
+    "The suites at mt.Malarayat": { cost: "₱4500", location: "Malarayat, Lipa" },
+    "Anfa Royal": { cost: "₱3200", location: "Pres. Laurel Highway" }
+  },
+  "TOURIST ATTRACTIONS": {
+    "Metropolitan Cathedral of San Sebastian (The Roman Catholic Archdiocese of Lipa)": { cost: "Free", location: "Cathedral Rd., Lipa" },
+    "CASA DE SEGUNDA": { cost: "₱100", location: "Rizal St., Lipa" },
+    "Our Lady Of Mount Carmel Parish": { cost: "Free", location: "Antipolo del Norte, Lipa" },
+    "LIPA CITY COMMUNITY PARK": { cost: "₱50", location: "Brgy. Dagatan, Lipa" },
+    "THE OLD GROVE FARMSTEAD": { cost: "₱250", location: "Brgy. Lodlod, Lipa" }
+  },
+  "CAFES": {
+    "Starbucks Lipa": { cost: "₱250", location: "Robinsons Place, Lipa" },
+    "Coffee Project": { cost: "₱300", location: "Vista Mall, Lipa" },
+    "Bo's Coffee Lipa": { cost: "₱220", location: "Ayala Highway" },
+    "The Coffee Bean & Tea Leaf": { cost: "₱280", location: "SM City Lipa" },
+    "Cafe de Lipa": { cost: "₱180", location: "Big Ben Complex, Lipa" }
+  },
+  "SHOPPING MALLS": {
+    "SM City Lipa": { cost: "Variable", location: "Pres. Laurel Highway, Lipa" },
+    "Robinsons Lipa": { cost: "Variable", location: "JP Laurel Highway, Lipa" },
+    "The Outlets Lipa": { cost: "Variable", location: "Brgy. Marawoy, Lipa" },
+    "Lipa City Supermarket": { cost: "Variable", location: "P. Torres St., Lipa" },
+    "Walter Mart Lipa": { cost: "Variable", location: "Brgy. Balintawak, Lipa" }
+  },
+  "RESORT": {
+  "Villa Belinda Pavilion Resort": { cost: "₱1000-12hrs", location: "Purok 1, Brgy. Lodlod, Lipa City, Batangas, 4217" },
+  "MZ Magsino Resort": { cost: "₱1500-overnight", location: "Purok 5, Barangay Lodlod, Morada Avenue, Lipa City, Batangas, 4217" },
+  "La Vida Resort Lipa City Batangas": { cost: "₱2000", location: " In front of Academia de Lipa, Purok 1, Barangay Lodlod, Lipa City, Batangas, 4217" },
+  "Villa Jovita Resort": { cost: "₱700", location: "Brgy. Bagong Pook, Lipa" },
+  "Hotel 1925": { cost: "₱1000", location: "Brgy. Sabang, Lipa" }
+}
+};
+
+
+const destinationImages = {
+  "The Aristocrat restaurant": "Aristocrat.jpg",
+  "Lomi king": "r2.jpg",
+  "Lipa Grill": "r3.jpg",
+  "Hapag filipino restaurant": "r4.jpg",
+  "Fat Grill": "r5.jpg",
+  
+  "Jet Hotel": "a1.jpg",
+  "Solano": "a2.jpg",
+  "Meaco Royal Hotel": "a3.jpg",
+  "The suites at mt.Malarayat": "a4.jpg",
+  "Anfa Royal": "a5.jpg",
+  
+  "Metropolitan Cathedral of San Sebastian (The Roman Catholic Archdiocese of Lipa)": "t1.jpg",
+  "CASA DE SEGUNDA": "t2.jpg",
+  "Our Lady Of Mount Carmel Parish": "t3.jpg",
+  "LIPA CITY COMMUNITY PARK": "t4.jpg",
+  "THE OLD GROVE FARMSTEAD": "t5.jpg",
+  
+  "Starbucks Lipa": "c1.jpg",
+  "Coffee Project": "c2.jpg",
+  "Bo's Coffee Lipa": "c3.jpg",
+  "The Coffee Bean & Tea Leaf": "c4.jpg",
+  "Cafe de Lipa": "c5.jpg",
+  
+  "SM City Lipa": "s1.jpg",
+  "Robinsons Lipa": "s2.jpg",
+  "The Outlets Lipa": "s3.jpg",
+  "Lipa City Supermarket": "s4.jpg",
+  "Walter Mart Lipa": "s5.jpg",
+
+  "Villa Belinda Pavilion Resort":"p1.jpg",
+  "MZ Magsino Resort":"p2.jpg",
+  "La Vida Resort Lipa City Batangas":"p3.jpg",
+  "Villa Jovita Resort":"p4.jpg",
+  "Hotel 1925":"p5.jpg"
+};
+
+
+
+  function getDescription(category, destination) {
+    return (destinationDescriptions[category] && destinationDescriptions[category][destination]) || "No description available.";
+  }
+
+  function updateDestinations(selected = '') {
+    const category = document.getElementById('category').value;
+    const destinationSelect = document.getElementById('destination');
+    destinationSelect.innerHTML = '<option value="">-- Select Destination --</option>';
+    if (destinationOptions[category]) {
+      destinationOptions[category].forEach(dest => {
+        const option = document.createElement('option');
+        option.value = dest;
+        option.textContent = dest;
+        if (dest === selected) option.selected = true;
+        destinationSelect.appendChild(option);
+      });
+    }
+  }
+
+  function renderItems() {
+  const list = document.getElementById('itinerary-list');
+  list.innerHTML = '';
+  const grouped = {};
+  items.forEach(item => {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push(item);
+  });
+
+  Object.entries(grouped).forEach(([category, groupItems]) => {
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    const header = document.createElement('h2');
+    header.innerHTML = `${category} <span class="badge">${groupItems.length} items</span>`;
+    section.appendChild(header);
+
+    groupItems.forEach(item => {
+      const index = items.indexOf(item);
+      const details = destinationDetails[category]?.[item.destination] || {};
+      const cost = details.cost || "Not specified";
+      const location = details.location || "Unknown location";
+
+      const div = document.createElement('div');
+      div.className = 'trip-card grouped';
+     
+     div.innerHTML = `
+  <img src="${destinationImages[item.destination] || 'https://via.placeholder.com/150'}" alt="${item.destination}" style="width: 100%; max-width: 400px; border-radius: 20px; margin-bottom: 10px;">
+  <div class="trip-info">
+  <h3>${item.destination}</h3>
+  <p><strong>Note:</strong> ${item.notes || '—'}</p>
+  <p style="color: #aaa; font-size: 0.9em;">
+    📍 ${location} <span style="color: #ccc;">(${cost})</span>
+  </p>
+  <div class="action-buttons">
+    <button onclick="viewItemDetails(${index})">View Details</button>
+    <button onclick="openEditModal(${index})">Edit</button>
+    <button onclick="deleteItem(${index})">Delete</button>
+  </div>
+      </div>
+`;
+      section.appendChild(div);
+    });
+
+    list.appendChild(section);
+  });
+}
+
+
+  function viewItemDetails(index) {
+    const item = items[index];
+    const detailsContainer = document.getElementById('modal-details');
+    detailsContainer.innerHTML = `
+      <p><strong>Category:</strong> ${item.category}</p>
+      <p><strong>Destination:</strong> ${item.destination}</p>
+      <p><strong>Date:</strong> ${item.date || 'N/A'}</p>
+      <p><strong>Time:</strong> ${item.time || 'N/A'}</p>
+      <p><strong>Description:</strong> ${item.description}</p>
+    `;
+    document.getElementById('view-modal').style.display = 'block';
+  }
+
+  function openEditModal(index) {
+    const item = items[index];
+    document.getElementById('modal-category').value = item.category;
+    updateModalDestinations(item.destination);
+    document.getElementById('modal-destination').value = item.destination;
+    document.getElementById('modal-date').value = item.date || '';
+    document.getElementById('modal-time').value = item.time || '';
+    document.getElementById('modal-notes').value = item.notes || '';
+    document.getElementById('modalEditIndex').value = index;
+    document.getElementById('edit-modal').style.display = 'block';
+  }
+
+  function updateModalDestinations(selected = '') {
+    const category = document.getElementById('modal-category').value;
+    const destinationSelect = document.getElementById('modal-destination');
+    destinationSelect.innerHTML = '<option value="">-- Select Destination --</option>';
+    if (destinationOptions[category]) {
+      destinationOptions[category].forEach(dest => {
+        const option = document.createElement('option');
+        option.value = dest;
+        option.textContent = dest;
+        if (dest === selected) option.selected = true;
+        destinationSelect.appendChild(option);
+      });
+    }
+  }
+
+  function closeEditModal() {
+    document.getElementById('edit-modal').style.display = 'none';
+  }
+
+  function closeViewModal() {
+    document.getElementById('view-modal').style.display = 'none';
+  }
+
+  function clearForm() {
+    document.getElementById('itinerary-form').reset();
+    document.getElementById('editIndex').value = '';
+    updateDestinations();
+  }
+
+  function deleteItem(index) {
+    if (confirm("Are you sure you want to delete this item?")) {
+      items.splice(index, 1);
+      saveToLocalStorage();
+      renderItems();
+    }
+  }
+
+  document.getElementById('edit-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const index = document.getElementById('modalEditIndex').value;
+    const item = {
+      category: document.getElementById('modal-category').value,
+      destination: document.getElementById('modal-destination').value,
+      date: document.getElementById('modal-date').value,
+      time: document.getElementById('modal-time').value,
+      notes: document.getElementById('modal-notes').value,
+      description: items[index].description // Keep original
+    };
+    items[index] = item;
+    saveToLocalStorage();
+    renderItems();
+    closeEditModal();
+  });
+
+  document.getElementById('itinerary-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const category = document.getElementById('category').value;
+    const destination = document.getElementById('destination').value;
+    const item = {
+      category,
+      destination,
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value,
+      notes: document.getElementById('notes').value,
+      description: getDescription(category, destination)
+    };
+    const index = document.getElementById('editIndex').value;
+    if (index === '') {
+      items.push(item);
+    } else {
+      item.description = getDescription(category, destination);
+      items[index] = item;
+    }
+    saveToLocalStorage();
+    clearForm();
+    renderItems();
+  });
+
+  function saveToLocalStorage() {
+    localStorage.setItem('tripItems', JSON.stringify(items));
+  }
+
+  window.onload = function () {
+    const saved = localStorage.getItem('tripItems');
+    if (saved) {
+      items = JSON.parse(saved);
+      renderItems();
+    }
+  };
+</script>
+
+</body>
+</html>

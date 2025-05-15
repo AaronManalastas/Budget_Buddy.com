@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Travel Preferences</title>
+  <style>
+    * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+    }
+
+    .navbar {
+      background-color: #e75e1c;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed; /* Make it stick */
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+       margin-left: 150px;
+    }
+
+    .nav-left a, .nav-left span.logo {
+      color: #ecf0f1;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .nav-left a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-left span.logo {
+      font-size: 1.2em;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .profile-circle {
+      background-color: white;
+      color: #e75e1c;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .search-add {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-add input, .search-add button {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .search-add input {
+      width: 200px;
+    }
+
+    .search-add button {
+      background-color: white;
+      color: #e75e1c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #formPage, #detailsPage {
+      background-color: #111;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100%;
+      z-index: 10;
+      display: none;
+      padding: 20px;
+    }
+
+    .back-button {
+      background-color: #e75e1c;
+      border: none;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+
+    .container {
+      max-width: 1100px;
+  margin: 10px auto;
+  padding: 100px 20px 20px; /* Add top padding to offset the fixed navbar */
+    }
+
+    h2 {
+      margin-top: 20px;
+      color: #fff;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .option {
+      background-color: #1e1e1e;
+      border: 1px solid #444;
+      border-radius: 6px;
+      padding: 10px 15px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .option input {
+      margin-right: 10px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .save-btn {
+      background-color: #e85d1f;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .save-btn:hover {
+      background-color: #ff7f3f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+   <!-- NAVBAR + HEADER COMBINED -->
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">✈️ Budget Buddy</span>
+    <a href="index.html">🚀Welcome to TraveLogix!</a>
+    <a href="trip-itinerary.html">🧳Trip Itinerary</a>
+    <a href="transportation-guide.html">🌐Transportation Guide</a>
+    <a href="expence-tracker.html">💰Expense Tracker</a>
+    <a href="dashboard.html">👤Dashboard</a>
+  </div>
+  <div class="nav-right">   
+    <div class="profile-circle">B</div>
+  </div>
+</nav>
+
+  <div class="container">
+    <h2>Set Your Travel Preferences</h2>
+    <p>Help us personalize your experience by selecting your travel preferences.</p>
+
+    <div class="section">
+      <h3>Destination Preferences</h3>
+      <div class="options-grid">
+        <label class="option"><input type="checkbox" /> Resort</label>
+        <label class="option"><input type="checkbox" /> Mountains</label>
+        <label class="option"><input type="checkbox" /> Historical Sites</label>
+        <label class="option"><input type="checkbox" /> Parks</label>
+        <label class="option"><input type="checkbox" /> Cafes</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Interest Categories</h3>
+      <div class="options-grid">
+        <label class="option"><input type="checkbox" /> Adventure</label>
+        <label class="option"><input type="checkbox" /> Food</label>
+        <label class="option"><input type="checkbox" /> Culture</label>
+        <label class="option"><input type="checkbox" /> Nature</label>
+        <label class="option"><input type="checkbox" /> Shopping</label>
+        <label class="option"><input type="checkbox" /> Relaxation</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Budget Range</h3>
+      <div class="radio-group">
+        <label class="option"><input type="radio" name="budget" /> Low Budget (₱500 - ₱1,500 per day)</label>
+        <label class="option"><input type="radio" name="budget" /> Medium Budget (₱1,500 - ₱3,000 per day)</label>
+        <label class="option"><input type="radio" name="budget" /> High Budget (₱3,000+ per day)</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Travel Style</h3>
+      <div class="options-grid">
+        <label class="option"><input type="radio" name="style" /> Solo Travel</label>
+        <label class="option"><input type="radio" name="style" /> With Friends</label>
+        <label class="option"><input type="radio" name="style" /> Family Trip</label>
+        <label class="option"><input type="radio" name="style" /> Group Tour</label>
+      </div>
+    </div>
+
+    <button class="save-btn">Save Preferences</button>
+
+    <footer>You can update these preferences anytime from your profile settings.</footer>
+  </div>
+
+  <script>
+    document.querySelector('.save-btn').addEventListener('click', function () {
+      const preferences = {
+        destinations: Array.from(document.querySelectorAll('.section:nth-of-type(1) input:checked')).map(el => el.parentElement.textContent.trim()),
+        interests: Array.from(document.querySelectorAll('.section:nth-of-type(2) input:checked')).map(el => el.parentElement.textContent.trim()),
+        budget: document.querySelector('input[name="budget"]:checked')?.parentElement.textContent.trim() || '',
+        style: document.querySelector('input[name="style"]:checked')?.parentElement.textContent.trim() || ''
+      };
+
+      localStorage.setItem('travelPreferences', JSON.stringify(preferences));
+      alert('Preferences saved!');
+      window.location.href = 'trip-itinerary.html'; // Redirect to your dashboard
+    });
+  </script>
+</body>
+</html>

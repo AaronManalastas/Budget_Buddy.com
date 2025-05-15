@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Transportation Guide</title>
+  <style>
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: #e75e1c;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-left: 150px;
+  }
+
+  .nav-left a, .nav-left span.logo {
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .nav-left a:hover {
+    text-decoration: underline;
+  }
+
+  .nav-left span.logo {
+    font-size: 1.2em;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .search-add {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .search-add input, .search-add button {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .search-add input {
+    width: 200px;
+  }
+
+  .search-add button {
+    background-color: white;
+    color: #e75e1c;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  .profile-circle {
+    background-color: white;
+    color: #e75e1c;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1em;
+  }
+
+  /* ADD SPACE BELOW FIXED NAVBAR */
+  body > *:not(.navbar) {
+    margin-top: 100px;
+  }
+
+    .search-add {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      margin-left: 950px;
+    }
+
+    .search-add input, .search-add button {
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .search-add input {
+      width: 200px;
+    }
+
+    .search-add button {
+      background-color: white;
+      color: #e75e1c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #formPage, #detailsPage {
+      background-color: #111;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: 100%;
+      z-index: 10;
+      display: none;
+      padding: 20px;
+    }
+
+    .back-button {
+      background-color: #e75e1c;
+      border: none;
+      color: white;
+      padding: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      background-color: #333;
+      border: 1px solid #555;
+      color: white;
+      border-radius: 4px;
+    }
+
+    button.save {
+      margin-top: 15px;
+      background-color: #27ae60;
+      color: white;
+      font-weight: bold;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .item-list {
+      padding: 10px;
+    }
+
+    .item {
+      background-color: #222;
+      padding: 10px;
+      margin-bottom: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .item:hover {
+      background-color: #333;
+    }
+
+    .item small {
+      display: block;
+      font-size: 0.8em;
+      color: #bbb;
+    }
+
+    .button-group {
+      margin-top: 10px;
+    }
+
+    .edit-button, .delete-button {
+      padding: 6px 12px;
+      margin-right: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      border: none;
+    }
+
+    .edit-button {
+      background-color: #3498db;
+      color: white;
+    }
+
+    .delete-button {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .details-columns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .details-column {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .details-column .details-section {
+      margin-bottom: 12px;
+    }
+
+    .details-column strong {
+      font-weight: bold;
+      color: #ffae42;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    #infoContainer {
+      padding: 10px;
+    }
+
+    #mapContainer {
+      margin: 10px;
+    }
+
+    #mapFrame {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 4px;
+    }
+
+    .directions-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .directions-container input {
+      width: 200px;
+    }
+
+    .directions-container button {
+      background-color: #e75e1c;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      padding: 10px 20px;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR + HEADER COMBINED -->
+<nav class="navbar">
+  <div class="nav-left">
+    <span class="logo">✈️ Budget Buddy</span>
+    <a href="index.html">🚀Welcome to TraveLogix!</a>
+    <a href="trip-itinerary.html">🧳Trip Itinerary</a>
+    <a href="transportation-guide.html">🌐Transportation Guide</a>
+    <a href="expence-tracker.html">💰Expense Tracker</a>
+    <a href="dashboard.html">👤Dashboard</a>
+  </div>
+  <div class="nav-right">
+    <div class="search-add">
+      <input type="text" id="search" placeholder="Search">
+      <button onclick="openForm()">+ Add</button>
+    </div>
+    <div class="profile-circle">B</div>
+  </div>
+</nav>
+
+<!-- Main Entries List -->
+<div class="item-list" id="list"></div>
+
+<!-- Info Section -->
+<div id="infoContainer"></div>
+
+<!-- Google Map -->
+<div id="mapContainer">
+  <iframe id="mapFrame" src="https://www.google.com/maps?q=Manila&output=embed" allowfullscreen></iframe>
+</div>
+
+<!-- Directions Section -->
+<div class="directions-container">
+  <label for="directions">Search for Directions:</label>
+  <input type="text" id="directions" placeholder="Enter a destination">
+  <button onclick="getDirections()">Get Directions</button>
+</div>
+
+<!-- Details Page -->
+<div id="detailsPage">
+  <button class="back-button" onclick="goBack()">← Back</button>
+  <div id="detailsContent"></div>
+</div>
+
+<!-- Form Page -->
+<div id="formPage">
+  <button class="back-button" onclick="closeForm()">← Back</button>
+  <label>Activity: <input type="text" id="activity"></label>
+  <label>Type: <input type="text" id="type"></label>
+  <label>Location: <input type="text" id="location"></label>
+  <label>Cost: <input type="text" id="cost"></label>
+   <label>Notes: <textarea id="notes"></textarea></label>
+  <label>Map Location (place name): <input type="text" id="mapLocation"></label>
+  <label>Transportation Guide: <input type="text" id="transport"></label>
+  <button class="save" onclick="saveEntry()">Save Entry</button>
+</div>
+
+<script>
+  let entries = [];
+  let editIndex = null;
+
+  window.onload = function () {
+    const saved = localStorage.getItem("transportationEntries");
+    if (saved) {
+      entries = JSON.parse(saved);
+      renderList();
+    }
+  };
+
+  function saveEntries() {
+    localStorage.setItem("transportationEntries", JSON.stringify(entries));
+  }
+
+  function openForm(index = null) {
+    document.getElementById('formPage').style.display = 'block';
+    if (index !== null) {
+      editIndex = index;
+      const entry = entries[index];
+      document.getElementById('activity').value = entry.activity;
+      document.getElementById('type').value = entry.type;
+      document.getElementById('location').value = entry.location;
+      document.getElementById('mapLocation').value = entry.mapLocation;
+      document.getElementById('transport').value = entry.transport;
+      document.getElementById('notes').value = entry.notes;
+      document.getElementById('cost').value = entry.cost;
+    } else {
+      clearForm();
+      editIndex = null;
+    }
+  }
+
+  function closeForm() {
+    document.getElementById('formPage').style.display = 'none';
+    clearForm();
+    editIndex = null;
+  }
+
+  function saveEntry() {
+    const entry = {
+      activity: document.getElementById('activity').value,
+      type: document.getElementById('type').value,
+      location: document.getElementById('location').value,
+      mapLocation: document.getElementById('mapLocation').value,
+      transport: document.getElementById('transport').value,
+      notes: document.getElementById('notes').value,
+      cost: document.getElementById('cost').value
+    };
+
+    if (editIndex !== null) {
+      entries[editIndex] = entry;
+      editIndex = null;
+    } else {
+      entries.push(entry);
+    }
+
+    saveEntries();
+    renderList();
+    closeForm();
+  }
+
+  function clearForm() {
+    ['activity', 'type', 'location', 'mapLocation', 'transport', 'notes', 'cost'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+  }
+
+  function renderList() {
+    const list = document.getElementById('list');
+    list.innerHTML = '';
+    entries.forEach((entry, index) => {
+      const div = document.createElement('div');
+      div.className = 'item';
+      div.innerHTML = `
+        <strong>${entry.activity}</strong>
+        <small>${entry.type}, ${entry.location}</small>
+        <div class="button-group">
+          <button class="edit-button" onclick="event.stopPropagation(); openForm(${index})">Edit</button>
+          <button class="delete-button" onclick="event.stopPropagation(); deleteEntry(${index})">Delete</button>
+        </div>
+      `;
+      div.onclick = () => showDetailsPage(index);
+      list.appendChild(div);
+    });
+  }
+
+  function deleteEntry(index) {
+    if (confirm("Delete this entry?")) {
+      entries.splice(index, 1);
+      saveEntries();
+      renderList();
+    }
+  }
+
+  function showDetailsPage(index) {
+    const entry = entries[index];
+    const content = `
+      <div class="details-columns">
+        <div class="details-column">
+          <div class="details-section"><strong>Activity:</strong> ${entry.activity}</div>
+          <div class="details-section"><strong>Type:</strong> ${entry.type}</div>
+          <div class="details-section"><strong>Location:</strong> ${entry.location}</div>
+          <div class="details-section"><strong>Cost:</strong> ${entry.cost}</div>
+        </div>
+        <div class="details-column">
+          <div class="details-section"><strong>Notes:</strong> ${entry.notes}</div>
+          <div class="details-section"><strong>Map Location:</strong> ${entry.mapLocation}</div>
+          <div class="details-section"><strong>Transportation Guide:</strong> ${entry.transport}</div>
+        </div>
+      </div>
+    `;
+    document.getElementById('detailsContent').innerHTML = content;
+    document.getElementById('detailsPage').style.display = 'block';
+
+    // Info box above map
+    document.getElementById('infoContainer').innerHTML = content;
+
+    // Update map
+    document.getElementById('mapFrame').src =
+      `https://www.google.com/maps?q=${encodeURIComponent(entry.mapLocation)}&output=embed`;
+  }
+
+  function goBack() {
+    document.getElementById('detailsPage').style.display = 'none';
+    document.getElementById('infoContainer').innerHTML = '';
+    document.getElementById('mapFrame').src = 'https://www.google.com/maps?q=Manila&output=embed';
+  }
+
+  document.getElementById('search').addEventListener('input', function () {
+    const term = this.value.toLowerCase();
+    const list = document.getElementById('list');
+    list.innerHTML = '';
+    entries.forEach((entry, index) => {
+      if (
+        entry.activity.toLowerCase().includes(term) ||
+        entry.location.toLowerCase().includes(term)
+      ) {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <strong>${entry.activity}</strong>
+          <small>${entry.type}, ${entry.location}</small>
+          <div class="button-group">
+            <button class="edit-button" onclick="event.stopPropagation(); openForm(${index})">Edit</button>
+            <button class="delete-button" onclick="event.stopPropagation(); deleteEntry(${index})">Delete</button>
+          </div>
+        `;
+        div.onclick = () => showDetailsPage(index);
+        list.appendChild(div);
+      }
+    });
+  });
+
+  function getDirections() {
+    const destination = document.getElementById('directions').value;
+    const currentLocation = "Manila"; // You can dynamically get the user's current location if needed
+    const directionsURL = `https://www.google.com/maps/dir/${encodeURIComponent(currentLocation)}/${encodeURIComponent(destination)}`;
+    window.open(directionsURL, '_blank');
+  }
+</script>
+
+</body>
+</html>
